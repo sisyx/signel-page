@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { customAlert } from '../App';
 import Landing from '../components/Landing';
 import Sign from '../components/Sign';
@@ -14,20 +13,6 @@ const filesBase = "wwroot";
 export const root = "https://webproteam.info";
 
 function Admin() {
-    function updloadNewFile(xfile: File, directory: string = "unnameddir") {
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-            const filecontent = document.querySelector<HTMLImageElement>(".camp-profile-img");
-            if (filecontent && event.target && typeof event.target.result === "string" ) {
-                filecontent.src = event.target.result;
-            }
-        }
-
-        reader.readAsDataURL(xfile);
-        const newProfilePath = `campaign_profiles/${directory}`
-        uploadFile(newProfilePath, xfile)
-    }
 
     return ( 
         <div>

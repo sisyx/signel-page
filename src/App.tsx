@@ -1,4 +1,3 @@
-import { Slide, toast, ToastContainer } from 'react-toastify'
 import About from './components/About'
 import CurrentOrgans from './components/CurrnentOrgans'
 import Footer from './components/Footer'
@@ -48,17 +47,3 @@ export function customAlert(text: string) {
   // notify(text);
   alert(text)
 }
-
-const notify = (text: string) => toast.info(text, {
-  position: "top-right",
-  autoClose: 3000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-  theme: "light",
-  // progressClassName: "bg-none bg-blue-500",
-  className: "bg-red-500",
-  transition: Slide,
-})
