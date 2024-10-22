@@ -27,8 +27,8 @@ function Admin() {
               </div>
             </div>
             <Stats isAdmin={true} />
-            <Supporters />
-            <CurrentOrgans />
+            <Supporters getFile={getFile} isAdmin={true} uploadFile={uploadFile} />
+            <CurrentOrgans  getFile={getFile} isAdmin={true} uploadFile={uploadFile} />
             <Footer isAdmin={true} getFile={getFile} uploadFile={uploadFile} />
         </div>
      );
@@ -37,23 +37,22 @@ function Admin() {
 export default Admin;
 
 export async function uploadFile(path: string, file: File)  {
-    console.log(file)
-    // const token = getCookie("token");
     const reader = new FileReader();
 
     reader.readAsDataURL(file);
     const extension = getFileExtension(file.name)
-    if (!extension.toLowerCase().includes("jpeg")) {
-        customAlert("لطفا فایلی با فرمت jpeg انتخاب کنید");
-        return
-    }
     reader.onload = async function() {
         const filedata = reader.result
+
+        if (extension === ".svg") {
+            customAlert("فایل با فرمت SVG پشتیبانی نمیشود. لطفا عکس دیگری انتخاب کنید.");
+            return
+        }
 
         try {
             const data = {
                 filedata,
-                fileName: `image${extension}`,
+                fileName: `${Date.now()}${extension}`,
                 filePath: `${filesBase}${path}`
             }
             console.log(data)
@@ -63,7 +62,6 @@ export async function uploadFile(path: string, file: File)  {
                 body: JSON.stringify(data),
                 headers: {
                     "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${token}`
                 }
             });
 
@@ -83,22 +81,26 @@ export async function uploadFile(path: string, file: File)  {
     }
 }
 
-export function getCookie(name: string): string | undefined {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts?.pop()?.split(';').shift();
-  }
+    export function getCookie(name: string): string | undefined {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts?.pop()?.split(';').shift();
+    }
 
-  export function getFileExtension(filename: string) {
-    const lastDotIndex = filename.lastIndexOf('.');
-    const fileExtension = filename.slice(lastDotIndex);
-    return fileExtension; 
-}
+    export function getFileExtension(filename: string): string {
+        const lastDotIndex = filename.lastIndexOf('.');
+        const fileExtension = filename.slice(lastDotIndex);
+        return fileExtension;
+    }
+
+    export function getFilenameNoExt(filename: string) {
+        const lastDotIndex = filename.lastIndexOf('.');
+        const filenameNoExt = filename.slice(0, lastDotIndex);
+        return filenameNoExt;
+    }
 
 
 export async function getFile(filepath: string, filename: string) {    
-    // const token = getCookie("token");
-
     const data = {
         fileName: "",
         filePath: `${filesBase}${filepath}`,
@@ -110,7 +112,6 @@ export async function getFile(filepath: string, filename: string) {
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json",
-                // "Authorization": `Bearer ${token}`,
             }
         })
 
@@ -127,11 +128,14 @@ export async function getFile(filepath: string, filename: string) {
             filePath: string,
             filedata: string,
         }
-
+        let extension;
         if (res.objectResult.length) {
             const array = res.objectResult;
-            const profile = array.find((file: ObjectResultShape) => file?.fileName.startsWith(filename));
+            const profile = array
+            .filter((file: ObjectResultShape) => !!Number(getFilenameNoExt(file.fileName)))
+            .sort((filea: ObjectResultShape, fileb: ObjectResultShape) => getFilenameNoExt(filea.fileName) < getFilenameNoExt(fileb.fileName))[0];
             fileurl = profile.filePath;
+            extension = getFileExtension(profile.fileName)
         }
 
         if (!!fileurl) {
@@ -150,7 +154,7 @@ export async function getFile(filepath: string, filename: string) {
             const res1 = await req2.json();
 
             const fileData = !!res1.objectResult ? res1.objectResult : "r¶¬\u0085ç_\u008aW";
-            const dataUrl = `data:image/jpeg;base64,${fileData}`;
+            const dataUrl = `data:image/${extension?.slice(1)};base64,${fileData}`;
 
             return dataUrl;
         }

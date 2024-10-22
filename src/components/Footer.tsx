@@ -37,8 +37,7 @@ export default function Footer({isAdmin, uploadFile, getFile}: Props) {
             if (!req.ok) {
                 throw new Error(req.statusText);
             }
-            const res = await req.text();
-            // customAlert(res);
+            await req.text();
             return 1
         } catch (error: any) {
             // customAlert(error.message);
@@ -54,10 +53,8 @@ export default function Footer({isAdmin, uploadFile, getFile}: Props) {
                 throw new Error(req.statusText);
             }
             const res = await req.json();
-            // customAlert(res);
             return res?.content
         } catch (error: any) {
-            // customAlert(error.message);
             return ""
         }
     }
@@ -65,8 +62,8 @@ export default function Footer({isAdmin, uploadFile, getFile}: Props) {
 
     async function handleClickSubmit() {
         const text = document.querySelector<HTMLTextAreaElement>(".footer-text-content")?.value || "";
-        console.log(text)
-        const isEdited = await editFoorter(text)
+        console.log(text);
+        await editFoorter(text);
     }
 
     return (
@@ -80,9 +77,9 @@ export default function Footer({isAdmin, uploadFile, getFile}: Props) {
                 </div>
                 {
                     isAdmin ?
-                    <div className="flex flex-col">
+                    <div className="flex flex-col items-center md:items-end w-full">
                         <textarea dir="rtl" placeholder="لطفا چیزی بنویسی" className={`footer-text-content outline-none bg-white bg-opacity-90 text-black md:text-xl max-w-96 w-[80vw] aspect-video`} name="footer-sample" value={sampleText} onChange={e => setSampleText(e.target.value)}></textarea> 
-                        <button onClick={handleClickSubmit} className={`bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded`}>
+                        <button onClick={handleClickSubmit} className={`bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 max-w-96 w-[80vw] border border-blue-500 hover:border-transparent rounded`}>
                             ثبت
                         </button>
                     </div>
