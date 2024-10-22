@@ -1,7 +1,62 @@
+import { useEffect, useState } from 'react';
 import Cloud from './Cloud';
 import styles from './Stats.module.css';
+import { root } from '../pages/Admin';
 
-export default function Stats() {
+
+type Props = {
+    isAdmin: Boolean,
+}
+
+type StatsProps = {
+    valueOne: number,
+    valueTwo: number,
+    valueThree: number
+}
+
+export default function Stats({isAdmin}: Props) {
+
+    const [stats, setStats] = useState<StatsProps>({valueOne: 0, valueTwo: 0, valueThree: 0});
+
+    useEffect(() => {
+        getStats();
+    }, [])
+
+    async function updateStats() {
+        try {
+            const req = await fetch(`${root}/api/Statistics`, {
+                method: "POST",
+                body: JSON.stringify(stats),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if(!req.ok) {
+                throw new Error(req.statusText);
+            }
+        } catch (error: any) {
+            console.error(error);
+        }
+    }
+
+    async function getStats() {
+        try {
+            const req = await fetch(`${root}/api/Statistics`);
+            if (!req.ok) throw new Error(req.statusText);
+            const res = await req.json();
+            setStats(res);
+            return res;
+        } catch(error: any) {
+            console.error(error)
+            const result = {
+                valueOne: 0,
+                valueTwo: 0,
+                valueThree: 0,
+            }
+            setStats(result)
+            return result
+        }
+    }
 
 
     return (
@@ -14,19 +69,28 @@ export default function Stats() {
                     <div className="relative w-screen max-w-[80vw] flex items-center justify-center py-10 bg-primary">
                         <div className="flex items-center justify-evenly h-full w-full text-white">
                             <div className="flex flex-col items-center gap-1 md:gap-4">
-                                <span className=" font-extrabold md:text-4xl">12000</span>
+                                {
+                                    isAdmin ? <input onBlur={updateStats} type='number' className='w-20 min-w-12 bg-transparent outline-none border border-white p-2 rounded-md' placeholder='0' value={stats.valueOne} onChange={e => setStats(cur => ({...cur, valueOne: Number(e.target.value)}))} />
+                                    : <span className=" font-extrabold md:text-4xl">{stats.valueOne}</span>
+                                }
                                 <span className="md:text-2xl text-sm">لورم ایپسورم</span>
                             </div>
                         </div>
                         <div className="flex items-center justify-evenly h-full w-full text-white">
                             <div className="flex flex-col items-center gap-1 md:gap-4">
-                                <span className=" font-extrabold md:text-4xl">12000</span>
+                            {
+                                    isAdmin ? <input onBlur={updateStats} type='number' className='w-20 min-w-12 bg-transparent outline-none border border-white p-2 rounded-md' placeholder='0' value={stats.valueTwo} onChange={e => setStats(cur => ({...cur, valueTwo: Number(e.target.value)}))} />
+                                    : <span className=" font-extrabold md:text-4xl">{stats.valueTwo}</span>
+                                }
                                 <span className="md:text-2xl text-sm">لورم ایپسورم</span>
                             </div>
                         </div>
                         <div className="flex items-center justify-evenly h-full w-full text-white">
                             <div className="flex flex-col items-center gap-1 md:gap-4">
-                                <span className=" font-extrabold md:text-4xl">12000</span>
+                            {
+                                    isAdmin ? <input onBlur={updateStats} type='number' className='w-20 min-w-12 bg-transparent outline-none border border-white p-2 rounded-md' placeholder='0' value={stats.valueThree} onChange={e => setStats(cur => ({...cur, valueThree: Number(e.target.value)}))} />
+                                    : <span className=" font-extrabold md:text-4xl">{stats.valueThree}</span>
+                                }
                                 <span className="md:text-2xl text-sm">لورم ایپسورم</span>
                             </div>
                         </div>
