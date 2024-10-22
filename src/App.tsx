@@ -8,47 +8,35 @@ import Sign from './components/Sign'
 import Slides from './components/Slides'
 import Stats from './components/Stats'
 import Supporters from './components/Supporters'
-import Admin, { getCookie } from './pages/Admin';
-import { useEffect, useState } from 'react'
+import Admin, { getFile, uploadFile } from './pages/Admin';
+import { Route, Routes } from 'react-router-dom'
+import About2 from './components/About2'
 
 function App() {
   // const [role, _setCookie] = useState(getCookie("role")) ;
 
   return (
-    <>
-    {/* // { */}
-    {/* //   role == "admin" ? */}
-        <Admin />
-      {/* // : <>
-      // <Landing isAdmin={false} uploadFile={() => {return}} />
-      // <Sign />
-      // <Pele />
-      // <About />
-      // <div className='w-screen flex justify-center'>
-      //   <div className='max-w-4xl w-full'>
-      //     <Slides/>
-      //   </div>
-      // </div>
-      // <Stats />
-      // <Supporters />
-      // <CurrentOrgans />
-      // <Footer />
-      // </>
-  // } */}
-  {/* //         <ToastContainer
-  //           position="top-right"
-  //           autoClose={3000}
-  //           hideProgressBar={false}
-  //           newestOnTop={true}
-  //           closeOnClick={true}
-  //           rtl={true}
-  //           pauseOnFocusLoss={false}
-  //           draggable
-  //           pauseOnHover
-  //           theme="dark"
-  //           transition={Slide}
-  //         /> */}
-    </>
+    <Routes>
+      <Route path='/' element={
+        <>
+        <Landing getFile={getFile} isAdmin={false} uploadFile={uploadFile} />
+            <Sign />
+            <Pele getFile={getFile} isAdmin={false} uploadFile={uploadFile} />
+            <About getFile={getFile} isAdmin={false} uploadFile={uploadFile} />
+            <About2 getFile={getFile} isAdmin={false} uploadFile={uploadFile} />
+            <div className='w-screen flex justify-center'>
+              <div className='max-w-4xl w-full'>
+                <Slides getFile={getFile} isAdmin={false} uploadFile={uploadFile} />
+              </div>
+            </div>
+            <Stats isAdmin={false} />
+            <Supporters />
+            <CurrentOrgans />
+            <Footer isAdmin={false} getFile={getFile} uploadFile={uploadFile} />
+        </>
+      } />
+      <Route path="/admin" element={<Admin />} />
+  </Routes>
   )
 }
 

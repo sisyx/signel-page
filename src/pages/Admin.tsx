@@ -7,6 +7,9 @@ import About from '../components/About';
 import Slides from '../components/Slides';
 import Stats from '../components/Stats';
 import About2 from '../components/About2';
+import Supporters from '../components/Supporters';
+import CurrentOrgans from '../components/CurrnentOrgans';
+import Footer from '../components/Footer';
 const filesBase = "wwroot";
 export const root = "https://webproteam.info";
 
@@ -31,14 +34,17 @@ function Admin() {
             <Landing getFile={getFile} isAdmin={true} uploadFile={uploadFile} />
             <Sign />
             <Pele getFile={getFile} isAdmin={true} uploadFile={uploadFile} />
-            <About getFile={getFile} isAdmin={false} uploadFile={uploadFile} />
-            <About2 getFile={getFile} isAdmin={false} uploadFile={uploadFile} />
+            <About getFile={getFile} isAdmin={true} uploadFile={uploadFile} />
+            <About2 getFile={getFile} isAdmin={true} uploadFile={uploadFile} />
             <div className='w-screen flex justify-center'>
               <div className='max-w-4xl w-full'>
-                <Slides getFile={getFile} isAdmin={false} uploadFile={uploadFile} />
+                <Slides getFile={getFile} isAdmin={true} uploadFile={uploadFile} />
               </div>
             </div>
-            <Stats isAdmin={false} />
+            <Stats isAdmin={true} />
+            <Supporters />
+            <CurrentOrgans />
+            <Footer isAdmin={true} getFile={getFile} uploadFile={uploadFile} />
         </div>
      );
 }

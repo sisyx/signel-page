@@ -27,7 +27,7 @@ export default function Pele({getFile, uploadFile, isAdmin = false}:Props) {
     return (
         <div className="w-screen h-sceen pb-16 relative">
             <div className="relative w-full h-full flex items-center justify-center">
-                <img src={file} className=" min-w-24 min-h-24" alt=" "/>
+                <img src={file} className="w-[80vw] max-w-80" alt=" "/>
                 {
                     isAdmin ?
                         <label onClick={() => fileInputRef.current?.click()} htmlFor="profile-input" className="absolute top-0 left-0 right-0 bottom-0 text-2xl group-hover:opacity-100 transition-all duration-150 bg-opacity-0 hover:bg-opacity-55 backdrop-blur-0 bg-gray-100 w-full h-full flex items-center justify-center cursor-pointer">
