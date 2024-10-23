@@ -29,8 +29,8 @@ function App() {
               </div>
             </div>
             <Stats isAdmin={false} />
-            <Supporters />
-            <CurrentOrgans />
+            <Supporters isAdmin={false} getFile={getFile} uploadFile={uploadFile} />
+            <CurrentOrgans isAdmin={false} getFile={getFile} uploadFile={uploadFile} />
             <Footer isAdmin={false} getFile={getFile} uploadFile={uploadFile} />
         </>
       } />

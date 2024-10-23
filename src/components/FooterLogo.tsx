@@ -25,7 +25,7 @@ export default function FooterLogo({isAdmin, index, uploadFile, getFile}: Props)
 
     return (
         <div className="relative">
-            <img src={file} className="w-24 aspect-square bg-transparent" />
+            <img src={file} className="max-w-24 aspect-square bg-transparent" />
             {
                 isAdmin ?
                     <label onClick={() => fileInputRef.current?.click()} htmlFor="profile-input" className="absolute top-0 left-0 right-0 bottom-0 text-2xl group-hover:opacity-100 transition-all duration-150 bg-opacity-0 hover:bg-opacity-55 backdrop-blur-0 bg-gray-100 w-full h-full flex items-center justify-center cursor-pointer">
